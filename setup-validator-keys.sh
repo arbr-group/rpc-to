@@ -2,6 +2,8 @@
 
 set -e
 
+source env.sh
+
 # Create Validator Account and Tuner
 PATH="/usr/share/solana-release/bin:$PATH"
 solana-keygen new -o ${SOLANA_HOME}/validator-keypair.json
