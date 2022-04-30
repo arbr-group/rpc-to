@@ -2,6 +2,8 @@
 
 set -e
 
+source env.sh
+
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
 solana config set --url mainnet-beta &&
