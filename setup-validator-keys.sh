@@ -2,7 +2,7 @@
 
 set -e
 
-source env.sh
+. ./env.sh
 
 # Create Validator Account and Tuner
 PATH="/usr/share/solana-release/bin:$PATH"
