@@ -6,8 +6,8 @@ set -e
 
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
-solana config set --url mainnet-beta &&
-solana-validator \
+${SOLANA} config set --url mainnet-beta &&
+${SOLANA_VALIDATOR} \
     --entrypoint entrypoint.devnet.solana.com:8001 \
     --entrypoint entrypoint2.devnet.solana.com:8001 \
     --entrypoint entrypoint3.devnet.solana.com:8001 \
