@@ -33,6 +33,7 @@ adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}"
 # Create Run Script
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
+solana config set --url mainnet-beta &&
 solana-validator \
     --rpc-threads $(nproc) \
     --accounts ${SOLANA_HOME}/accounts \
