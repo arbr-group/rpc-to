@@ -2,7 +2,7 @@
 
 set -e
 
-source env.sh
+. ./env.sh
 
 # Get Version and Install
 cd "$(mktemp -d)" || exit
