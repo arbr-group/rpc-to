@@ -2,6 +2,8 @@
 
 set -e
 
+source env.sh
+
 # Install Caddy
 apt-get update -qqy && apt-get install -qqy debian-keyring debian-archive-keyring apt-transport-https
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | tee /etc/apt/trusted.gpg.d/caddy-stable.asc
