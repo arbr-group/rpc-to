@@ -2,7 +2,7 @@
 
 set -e
 
-source env.sh
+. ./env.sh
 
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
