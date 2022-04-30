@@ -23,7 +23,6 @@ ${SOLANA_VALIDATOR} \
     --only-known-rpc \
     --wal-recovery-mode skip_any_corrupted_record \
     --identity ${SOLANA_HOME}/validator-keypair.json \
-    --vote-account ${SOLANA_HOME}/vote-account-keypair.json \
     --log ${SOLANA_HOME}/log/validator.log \
     --accounts /mnt/ramdisk/solana-accounts \
     --ledger ${SOLANA_HOME}/ledger \
