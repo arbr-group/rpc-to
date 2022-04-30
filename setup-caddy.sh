@@ -2,7 +2,7 @@
 
 set -e
 
-source env.sh
+. ./env.sh
 
 # Install Caddy
 apt-get update -qqy && apt-get install -qqy debian-keyring debian-archive-keyring apt-transport-https
