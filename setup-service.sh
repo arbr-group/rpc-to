@@ -2,7 +2,7 @@
 
 set -e
 
-source env.sh
+. ./env.sh
 
 # Create Service
 sudo cat > ${SERVICE} <<EOL
