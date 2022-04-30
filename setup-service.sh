@@ -2,6 +2,8 @@
 
 set -e
 
+source env.sh
+
 # Create Service
 sudo cat > ${SERVICE} <<EOL
 [Unit]
