@@ -2,7 +2,7 @@
 
 set -e
 
-source env.sh
+. ./env.sh
 
 # Create RPC User
 adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}"
