@@ -27,6 +27,9 @@ wget https://github.com/solana-labs/solana/releases/download/v${VERSION}/solana-
 tar jxf solana-release-x86_64-unknown-linux-gnu.tar.bz2
 sudo mv solana-release /usr/share/
 
+# Create RPC User
+sudo adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}" || true
+
 # Create Service
 sudo cat > ${SERVICE} <<EOL
     [Unit]
@@ -52,7 +55,7 @@ EOL
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
 solana-validator \
-    --identity ~/validator-keypair.json \
+    --identity ${SOLANA_HOME}/validator-keypair.json \
     --rpc-port 8899 \
     --no-voting \
     --rpc-bind-address 0.0.0.0 \
@@ -63,21 +66,19 @@ solana-validator \
     --entrypoint entrypoint3.devnet.solana.com:8001 \
     --limit-ledger-size \
     --full-rpc-api \
+    --ledger ${SOLANA_HOME}/ledger \
     --log ${SOLANA_HOME}/validator.log
 EOL
 
 chmod +x ${RUN_SCRIPT}
 
-# Create RPC User
-sudo adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}"
-
-# Give User Access to Dir
+# make sure solana owns its own data dir
 sudo chown -R ${SOLANA_USER}:${SOLANA_USER} ${SOLANA_HOME}
 sudo -iu ${SOLANA_USER} mkdir -p ${SOLANA_HOME}/ledger
 
 # Create Validator Account and Tuner
 PATH="/usr/share/solana-release/bin:$PATH"
-sudo solana-keygen new -o ${SOLANA_HOME}/validator-keypair.json
-sudo olana-sys-tuner --user ${SOLANA_USER}> ${SOLANA_HOME}/sys-tuner.log 2>&1 &
+solana-keygen new -o ${SOLANA_HOME}/validator-keypair.json
+sudo solana-sys-tuner --user ${SOLANA_USER}> ${SOLANA_HOME}/sys-tuner.log 2>&1 &
 
  sudo systemctl enable --now sol

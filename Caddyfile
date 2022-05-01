@@ -1,8 +1,9 @@
 :80 {
- reverse_proxy 127.0.0.1:8899
-}
-
-
-:443 {
-    respond "Hello, world!"
+  @rpc {
+    path /api/*
+  }
+  header -Server
+  header Access-Control-Allow-Methods POST, OPTIONS
+  header access-control-max-age 86400
+  reverse_proxy @rpcpost localhost:8899
 }
