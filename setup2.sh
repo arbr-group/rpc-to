@@ -1,3 +1,21 @@
+#!/usr/bin/bash
+
+set -e
+
+sudo apt update
+
+# Download Caddy
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
+
+# Start Caddyfile
+sudo cp Caddyfile /etc/caddy/Caddyfile
+caddy adapt --config /etc/caddy/Caddyfile
+systemctl restart caddy
+
 # Download Solana CLI
 sh -c "$(curl -sSfL https://release.solana.com/v1.10.8/install)"
 
@@ -17,13 +35,17 @@ solana config set --keypair ~/validator-keypair.json
 solana airdrop 1
 
 # Run Validator
-solana-validator \
+exec solana-validator \
     --identity ~/validator-keypair.json \
     --rpc-port 8899 \
-    --rpc-bind-address 0.0.0.0 \
     --no-voting \
-    --wal-recovery-mode skip_any_corrupted_record \
+    --only-known-rpc \
+    --rpc-bind-address 0.0.0.0 \
+    --dynamic-port-range 8000-8020 \
+    --no-port-check \
     --entrypoint entrypoint.devnet.solana.com:8001 \
+    --entrypoint entrypoint2.devnet.solana.com:8001 \
+    --entrypoint entrypoint3.devnet.solana.com:8001 \
     --limit-ledger-size \
     --full-rpc-api \
     --log -
