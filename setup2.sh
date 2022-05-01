@@ -3,7 +3,7 @@
 
 sh -c "$(curl -sSfL https://release.solana.com/v1.10.8/install)"
 
-export PATH="/home/${whoami}/.local/share/solana/install/active_release/bin:$PATH"
+source .profile
 
 solana config set --url http://api.devnet.solana.com
 
