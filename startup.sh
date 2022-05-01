@@ -6,6 +6,7 @@ set -ex
 VERSION=1.9.16
 SOLANA_HOME=/super
 SOLANA_USER=cool
+CLUSTER=devnet
 RUN_SCRIPT=${SOLANA_HOME}/validator.sh
 UNGUESSABLE_STRING=2cb5dc45-2d25-45d9-aad0-a648955f27f8
 SERVICE=/etc/systemd/system/sol.service
@@ -39,10 +40,11 @@ adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}" 
 # create run script
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
+solana config set --url http://api.${CLUSTER}.solana.com
+solana config set --keypair ${SOLANA_HOME}/validator-keypair.json
 solana-validator \
     --rpc-threads $(nproc) \
     --accounts ${SOLANA_HOME}/accounts \
-    --dynamic-port-range 8000-8100 \
     --enable-rpc-transaction-history \
     --entrypoint entrypoint2.mainnet-beta.solana.com:8001 \
     --entrypoint entrypoint3.mainnet-beta.solana.com:8001 \
@@ -64,7 +66,7 @@ chmod +x ${RUN_SCRIPT}
 
 # log rotation
 cat << EOT > /etc/logrotate.d/sol
-/fast/solana-validator.log {
+${SOLANA_HOME}/solana-validator.log {
   rotate 4
   daily
   missingok
