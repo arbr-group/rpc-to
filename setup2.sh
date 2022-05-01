@@ -3,7 +3,7 @@
 
 sh -c "$(curl -sSfL https://release.solana.com/v1.10.8/install)"
 
-source .profile
+. ~/.profile
 
 solana config set --url http://api.devnet.solana.com
 
