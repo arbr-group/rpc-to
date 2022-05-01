@@ -13,11 +13,11 @@ sudo apt install caddy
 
 # Start Caddyfile
 sudo cp Caddyfile /etc/caddy/Caddyfile
-caddy adapt --config /etc/caddy/Caddyfile
-systemctl restart caddy
+sudo caddy adapt --config /etc/caddy/Caddyfile
+sudo systemctl restart caddy
 
 # Download Solana CLI
-sh -c "$(curl -sSfL https://release.solana.com/v1.10.8/install)"
+sh -c "$(curl -sSfL https://release.solana.com/v1.10.11/install)"
 
 . ~/.profile
 
@@ -35,7 +35,7 @@ solana config set --keypair ~/validator-keypair.json
 solana airdrop 1
 
 # Run Validator
-exec solana-validator \
+solana-validator \
     --identity ~/validator-keypair.json \
     --rpc-port 8899 \
     --no-voting \
