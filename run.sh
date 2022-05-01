@@ -1,33 +1,5 @@
 #!/usr/bin/bash
 
-function retry {
-  local retries=$1
-  shift
-
-  local count=0
-  until "$@"; do
-    exit=$?
-    wait=$((2 ** $count))
-    count=$(($count + 1))
-    if [ $count -lt $retries ]; then
-      echo "Retry $count/$retries exited $exit, retrying in $wait seconds..."
-      sleep $wait
-    else
-      echo "Retry $count/$retries exited $exit, no more retries left."
-      return $exit
-    fi
-  done
-  return 0
-}
-
-function restart_if_too_slow(){
-  sleep 180
-  avg_download_speed="$(grep solana_download_utils /fast/solana-validator.log | tail -10 | awk '{sum += $8} END {print int(int(sum/8)/1024/1024)}')"
-  if [[ $avg_download_speed -lt 100 ]]; then
-    systemctl restart sol
-  fi
-}
-
 set -ex
 
 # https://github.com/solana-labs/solana/releases
@@ -135,7 +107,3 @@ sudo chown -R ${SOLANA_USER}:${SOLANA_USER} ${SOLANA_HOME}
 sudo -iu ${SOLANA_USER} mkdir -p ${SOLANA_HOME}/ledger
 
 systemctl enable --now sol
-
-# give solana-validator two chances to download at a fast enough rate,
-# otherwise let it be rebuilt by AWS.
-retry 2 restart_if_too_slow
