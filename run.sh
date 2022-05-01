@@ -21,7 +21,7 @@ cat << EOT > /etc/caddy/Caddyfile
   header -Server
   header Access-Control-Allow-Methods POST, OPTIONS
   header access-control-max-age 86400
-  reverse_proxy /api/* localhost:8899
+  reverse_proxy localhost:8899
 }
 EOT
 systemctl restart caddy
