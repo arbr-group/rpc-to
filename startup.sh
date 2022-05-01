@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-set -ex
+set -e
 
 # https://github.com/solana-labs/solana/releases
 VERSION=1.9.16
@@ -8,8 +8,7 @@ SOLANA_HOME=/sol
 SOLANA_USER=sol
 CLUSTER=devnet
 RUN_SCRIPT=${SOLANA_HOME}/validator.sh
-SERVICE_NAME=wonka
-SERVICE_FILE=/etc/systemd/system/${SERVICE_NAME}.service
+SERVICE_NAME=sol
 
 apt-get update
 
@@ -35,15 +34,15 @@ tar jxf solana-release-x86_64-unknown-linux-gnu.tar.bz2
 rm -rf /usr/share/solana-release/
 mv solana-release /usr/share/
 
-/usr/share/solana-release/solana config set --url http://api.${CLUSTER}.solana.com
-/usr/share/solana-release/solana config set --keypair ${SOLANA_HOME}/validator-keypair.json
-
 # setup new user
 adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}" || true
 
 # create run script
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
+
+solana config set --url http://api.${CLUSTER}.solana.com
+solana-release/solana config set --keypair ${SOLANA_HOME}/validator-keypair.json
 
 exec solana-validator \
     --entrypoint entrypoint.devnet.solana.com:8001 \
@@ -90,7 +89,8 @@ EOT
 systemctl restart logrotate.service
 
 # create systemd
-sudo cat > ${SERVICE_FILE} <<EOL
+cd "$(mktemp -d)" || exit
+sudo cat > ${SERVICE_NAME}.service <<EOL
 [Unit]
 Description=Solana Validator
 After=network.target
@@ -110,6 +110,7 @@ ExecStart=${RUN_SCRIPT}
 [Install]
 WantedBy=multi-user.target
 EOL
+sudo mv ${SERVICE_NAME}.service /etc/systemd/system/${SERVICE_NAME}.service
 
 # create a validator account and enable sys-tuner
 export PATH="/usr/share/solana-release/bin:$PATH"
