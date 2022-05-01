@@ -1,7 +1,8 @@
-:80
+:80 {
+ reverse_proxy 127.0.0.1:8899
+}
 
-reverse_proxy 127.0.0.1:8899
 
-:443
-
-respond "Hello, world!"
+:443 {
+    respond "Hello, world!"
+}
