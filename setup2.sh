@@ -39,7 +39,6 @@ solana-validator \
     --identity ~/validator-keypair.json \
     --rpc-port 8899 \
     --no-voting \
-    --only-known-rpc \
     --rpc-bind-address 0.0.0.0 \
     --dynamic-port-range 8000-8020 \
     --no-port-check \
