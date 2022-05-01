@@ -79,7 +79,7 @@ EOT
 systemctl restart logrotate.service
 
 # create systemd
-sudo cat > ${SERVICE} <<EOL
+sudo cat > ${SERVICE_FILE} <<EOL
 [Unit]
 Description=Solana Validator
 After=network.target
