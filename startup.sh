@@ -109,4 +109,4 @@ solana-sys-tuner --user ${SOLANA_USER}> ${SOLANA_HOME}/sys-tuner.log 2>&1 &
 sudo chown -R ${SOLANA_USER}:${SOLANA_USER} ${SOLANA_HOME}
 sudo -iu ${SOLANA_USER} mkdir -p ${SOLANA_HOME}/ledger
 
-systemctl enable --now sol
+systemctl enable --now ${SERVICE_NAME}
