@@ -3,7 +3,7 @@
 set -e
 
 # https://github.com/solana-labs/solana/releases
-VERSION=1.9.16
+VERSION=1.10.11
 SOLANA_HOME=/sol
 SOLANA_USER=sol
 CLUSTER=devnet
@@ -41,7 +41,7 @@ adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}" 
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
 
-exec solana-validator \
+solana-validator \
     --entrypoint entrypoint.devnet.solana.com:8001 \
     --entrypoint entrypoint2.devnet.solana.com:8001 \
     --entrypoint entrypoint3.devnet.solana.com:8001 \
@@ -86,8 +86,7 @@ EOT
 systemctl restart logrotate.service
 
 # create systemd
-cd "$(mktemp -d)" || exit
-sudo cat > ${SERVICE_NAME}.service <<EOL
+sudo cat > /etc/systemd/system/${SERVICE_NAME}.service <<EOL
 [Unit]
 Description=Solana Validator
 After=network.target
@@ -107,7 +106,6 @@ ExecStart=${RUN_SCRIPT}
 [Install]
 WantedBy=multi-user.target
 EOL
-sudo mv ${SERVICE_NAME}.service /etc/systemd/system/${SERVICE_NAME}.service
 
 # create a validator account and enable sys-tuner
 export PATH="/usr/share/solana-release/bin:$PATH"
@@ -118,4 +116,4 @@ solana-sys-tuner --user ${SOLANA_USER}> ${SOLANA_HOME}/sys-tuner.log 2>&1 &
 sudo chown -R ${SOLANA_USER}:${SOLANA_USER} ${SOLANA_HOME}
 sudo -iu ${SOLANA_USER} mkdir -p ${SOLANA_HOME}/ledger
 
-systemctl enable --now ${SERVICE_NAME}
+systemctl enable --now ${SERVICE_NAME}.service
