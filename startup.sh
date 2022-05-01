@@ -46,21 +46,22 @@ sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
 
 solana-validator \
-    --rpc-threads $(nproc) \
-    --accounts ${SOLANA_HOME}/accounts \
     --enable-rpc-transaction-history \
     --entrypoint entrypoint2.mainnet-beta.solana.com:8001 \
     --entrypoint entrypoint3.mainnet-beta.solana.com:8001 \
     --entrypoint entrypoint4.mainnet-beta.solana.com:8001 \
     --entrypoint entrypoint5.mainnet-beta.solana.com:8001 \
     --entrypoint entrypoint.mainnet-beta.solana.com:8001 \
-    --full-rpc-api \
+    --accounts ${SOLANA_HOME}/accounts \
     --identity ${SOLANA_HOME}/validator-keypair.json \
     --ledger ${SOLANA_HOME}/ledger \
+    --limit-ledger-size
     --log ${SOLANA_HOME}/solana-validator.log \
     --no-port-check \
     --no-voting \
+    --full-rpc-api \
     --rpc-bind-address 127.0.0.1 \
+    --rpc-threads $(nproc) \
     --rpc-port 8899
 EOL
 
