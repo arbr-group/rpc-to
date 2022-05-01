@@ -18,8 +18,12 @@ solana airdrop 1
 
 # Run Validator
 solana-validator \
-  --identity ~/validator-keypair.json \
-  --rpc-port 8899 \
-  --entrypoint entrypoint.devnet.solana.com:8001 \
-  --limit-ledger-size \
-  --log -
+    --identity ~/validator-keypair.json \
+    --rpc-port 8899 \
+    --rpc-bind-address 0.0.0.0 \
+    --no-voting \
+    --wal-recovery-mode skip_any_corrupted_record \
+    --entrypoint entrypoint.devnet.solana.com:8001 \
+    --limit-ledger-size \
+    --full-rpc-api \
+    --log -
