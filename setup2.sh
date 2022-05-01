@@ -25,7 +25,7 @@ sh -c "$(curl -sSfL https://release.solana.com/v1.10.11/install)"
 solana config set --url http://api.devnet.solana.com
 
 # Tuner
-sudo $(command -v solana-sys-tuner) --user $(whoami) > sys-tuner.log 2>&1 &
+sudo $(command -v solana-sys-tuner) --user $(whoami) > ~/sys-tuner.log 2>&1 &
 
 # Create Identity
 solana-keygen new -o ~/validator-keypair.json --no-bip39-passphrase
