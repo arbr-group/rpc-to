@@ -8,8 +8,9 @@ SOLANA_HOME=/super
 SOLANA_USER=cool
 CLUSTER=devnet
 RUN_SCRIPT=${SOLANA_HOME}/validator.sh
-UNGUESSABLE_STRING=2cb5dc45-2d25-45d9-aad0-a648955f27f8
-SERVICE=/etc/systemd/system/sol.service
+SERVICE_NAME=rpc
+SERVICE_FILE=/etc/systemd/system/${SERVICE_NAME}.service
+
 
 sleep 60 # wait for apt, sorry mom i know it's ghetto
 # install caddy
