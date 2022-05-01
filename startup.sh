@@ -46,12 +46,19 @@ sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
 
 exec solana-validator \
-    --enable-rpc-transaction-history \
-    --entrypoint entrypoint2.mainnet-beta.solana.com:8001 \
-    --entrypoint entrypoint3.mainnet-beta.solana.com:8001 \
-    --entrypoint entrypoint4.mainnet-beta.solana.com:8001 \
-    --entrypoint entrypoint5.mainnet-beta.solana.com:8001 \
-    --entrypoint entrypoint.mainnet-beta.solana.com:8001 \
+    --entrypoint entrypoint.devnet.solana.com:8001 \
+    --entrypoint entrypoint2.devnet.solana.com:8001 \
+    --entrypoint entrypoint3.devnet.solana.com:8001 \
+    --entrypoint entrypoint4.devnet.solana.com:8001 \
+    --entrypoint entrypoint5.devnet.solana.com:8001 \
+    --expected-genesis-hash EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG \
+    --known-validator dv1ZAGvdsz5hHLwWXsVnM94hWf1pjbKVau1QVkaMJ92 \
+    --known-validator dv2eQHeP4RFrJZ6UeiZWoc3XTtmtZCUKxxCApCDcRNV \
+    --known-validator dv4ACNkpYPcE3aKmYDqZm9G5EB3J4MRoeE7WNDRBVJB \
+    --known-validator dv3qDFk1DTF36Z62bNvrCXe9sKATA6xvVy6A798xxAS \
+    --wal-recovery-mode skip_any_corrupted_record \
+    --only-known-rpc \
+    --account-index \
     --accounts ${SOLANA_HOME}/accounts \
     --identity ${SOLANA_HOME}/validator-keypair.json \
     --ledger ${SOLANA_HOME}/ledger \
@@ -62,7 +69,8 @@ exec solana-validator \
     --full-rpc-api \
     --rpc-bind-address 127.0.0.1 \
     --rpc-threads $(nproc) \
-    --rpc-port 8899
+    --rpc-port 8899 \
+    --dynamic-port-range 8000-8020 \
 EOL
 
 # make executable
