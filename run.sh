@@ -1,13 +1,12 @@
 #!/usr/bin/bash
 
 VERSION=1.10.11
-SOLANA_HOME=/sol
-SOLANA_USER=sol
-ENVIRONMENT=devnet
+SOLANA_HOME=/rapid
+SOLANA_USER=rpc
+CLUSTER=devnet
 RUN_SCRIPT=${SOLANA_HOME}/validator.sh
-SOLANA=/usr/share/solana-release/bin/solana
-SOLANA_VALIDATOR=/usr/share/solana-release/bin/solana-validator
-SERVICE=/etc/systemd/system/sol.service
+SERVICE_NAME=rpc
+SERVICE_FILE=/etc/systemd/system/${SERVICE_NAME}.service
 
 # Download Caddy
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
@@ -31,7 +30,7 @@ sudo mv solana-release /usr/share/
 sudo adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}" || true
 
 # Create Service
-sudo cat > ${SERVICE} <<EOL
+sudo cat > ${SERVICE_FILE} <<EOL
     [Unit]
     Description=Solana Validator
     After=network.target
@@ -52,9 +51,14 @@ sudo cat > ${SERVICE} <<EOL
     WantedBy=multi-user.target
 EOL
 
+
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
+
+solana config set --url http://api.${CLUSTER}.solana.com
+
 solana-validator \
+    --accounts ${SOLANA_HOME}/accounts \
     --identity ${SOLANA_HOME}/validator-keypair.json \
     --rpc-port 8899 \
     --no-voting \
@@ -78,7 +82,7 @@ sudo -iu ${SOLANA_USER} mkdir -p ${SOLANA_HOME}/ledger
 
 # Create Validator Account and Tuner
 PATH="/usr/share/solana-release/bin:$PATH"
-solana-keygen new -o ${SOLANA_HOME}/validator-keypair.json
+solana-keygen new -o ${SOLANA_HOME}/validator-keypair.json --no-bip39-passphrase 
 sudo solana-sys-tuner --user ${SOLANA_USER}> ${SOLANA_HOME}/sys-tuner.log 2>&1 &
 
- sudo systemctl enable --now sol
+sudo systemctl enable --now ${SERVICE_NAME}
