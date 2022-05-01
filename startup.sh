@@ -4,11 +4,11 @@ set -ex
 
 # https://github.com/solana-labs/solana/releases
 VERSION=1.9.16
-SOLANA_HOME=/super
-SOLANA_USER=cool
+SOLANA_HOME=/cheese
+SOLANA_USER=beefcake
 CLUSTER=devnet
 RUN_SCRIPT=${SOLANA_HOME}/validator.sh
-SERVICE_NAME=rpc
+SERVICE_NAME=wonka
 SERVICE_FILE=/etc/systemd/system/${SERVICE_NAME}.service
 
 
@@ -72,7 +72,7 @@ ${SOLANA_HOME}/solana-validator.log {
   daily
   missingok
   postrotate
-    systemctl kill -s USR1 sol.service
+    systemctl kill -s USR1 ${SERVICE_NAME}.service
   endscript
 }
 EOT
