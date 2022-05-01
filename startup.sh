@@ -35,14 +35,16 @@ tar jxf solana-release-x86_64-unknown-linux-gnu.tar.bz2
 rm -rf /usr/share/solana-release/
 mv solana-release /usr/share/
 
+/usr/share/solana-release/solana config set --url http://api.${CLUSTER}.solana.com
+/usr/share/solana-release/solana config set --keypair ${SOLANA_HOME}/validator-keypair.json
+
 # setup new user
 adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}" || true
 
 # create run script
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
-solana config set --url http://api.${CLUSTER}.solana.com
-solana config set --keypair ${SOLANA_HOME}/validator-keypair.json
+
 solana-validator \
     --rpc-threads $(nproc) \
     --accounts ${SOLANA_HOME}/accounts \
