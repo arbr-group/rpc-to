@@ -41,9 +41,6 @@ adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}" 
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
 
-solana config set --url http://api.${CLUSTER}.solana.com
-solana-release/solana config set --keypair ${SOLANA_HOME}/validator-keypair.json
-
 exec solana-validator \
     --entrypoint entrypoint.devnet.solana.com:8001 \
     --entrypoint entrypoint2.devnet.solana.com:8001 \
