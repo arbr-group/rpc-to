@@ -46,3 +46,4 @@ solana-validator \
     --rpc-port 8899 \
     --only-known-rpc \
     --wal-recovery-mode skip_any_corrupted_record
+    --log -
