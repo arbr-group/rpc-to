@@ -11,7 +11,7 @@ RUN_SCRIPT=${SOLANA_HOME}/validator.sh
 SERVICE_NAME=wonka
 SERVICE_FILE=/etc/systemd/system/${SERVICE_NAME}.service
 
-apt get update
+apt-get update
 
 # install caddy
 apt-get install -qqy debian-keyring debian-archive-keyring apt-transport-https
