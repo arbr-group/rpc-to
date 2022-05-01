@@ -45,7 +45,7 @@ adduser --disabled-password --gecos "" --home "${SOLANA_HOME}" "${SOLANA_USER}" 
 sudo cat > ${RUN_SCRIPT} <<EOL
 #!/usr/bin/bash
 
-solana-validator \
+exec solana-validator \
     --enable-rpc-transaction-history \
     --entrypoint entrypoint2.mainnet-beta.solana.com:8001 \
     --entrypoint entrypoint3.mainnet-beta.solana.com:8001 \
