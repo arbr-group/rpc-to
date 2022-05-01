@@ -4,8 +4,8 @@ set -ex
 
 # https://github.com/solana-labs/solana/releases
 VERSION=1.9.16
-SOLANA_HOME=/cheese
-SOLANA_USER=beefcake
+SOLANA_HOME=/sol
+SOLANA_USER=sol
 CLUSTER=devnet
 RUN_SCRIPT=${SOLANA_HOME}/validator.sh
 SERVICE_NAME=wonka
